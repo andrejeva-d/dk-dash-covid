@@ -47,3 +47,4 @@ tab$Kommune[tab$Kommune=="tonder"]<-"toender"
 tab$Kommune[tab$Kommune=="tarnby"]<-"taarnby"
 
 
+
