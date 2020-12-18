@@ -48,3 +48,4 @@ tab$Kommune[tab$Kommune=="tarnby"]<-"taarnby"
 
 
 
+
