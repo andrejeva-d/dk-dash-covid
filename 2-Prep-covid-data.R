@@ -1,51 +1,55 @@
 
+locale = locale(decimal_mark = ",")
 library(readr)
-dat1 <- read_delim("C:/Users/andre/Documents/R_projects/plotly_viz/data/data_maps/Data-Epidemiologiske-Rapport-07122020-07de/Municipality_test_pos.csv", 
-                   ";", escape_double = FALSE, trim_ws = TRUE,locale = locale(decimal_mark = ","))
-colnames(dat1)<-c("id", "Kommune", "Tested","COVID", "Pop", "Pos")
-dat1B<-dat1[,c("Kommune", "Pos","Tested", "COVID", "Pop")]
-colnames(dat1B)<-c("Kommune", "Pos","Tested", "COVID", "Pop")
-write.table(dat1B, file = "Municipality_tested_persons_time_series.txt", sep = "\t",
-            row.names = FALSE)
-dat <- read.delim("~/R_projects/plotly_viz/data/data_maps/Municipality_tested_persons_time_series.txt")
-tab<-dat1B
-tab$Kommune<-tolower(tab$Kommune)
-tab$Kommune<-str_replace_all(tab$Kommune, "\u00f8", "o")
-tab$Kommune<-str_replace_all(tab$Kommune, "\u00e6", "ae")
-tab$Kommune<-str_replace_all(tab$Kommune, "\u00e5", "a")
-tab$Kommune<-str_replace_all(tab$Kommune, "\u00c6", "ae")
-tab$Kommune<-str_replace_all(tab$Kommune, "-", "")
-
-tab$Kommune[tab$Kommune=="faaborgmidtfyn"]<-"faaborg midtfyn"
-tab$Kommune[tab$Kommune=="fano"]<-"fanoe"
-tab$Kommune[tab$Kommune=="dragor"]<-"dragoer"
-tab$Kommune[tab$Kommune=="fureso"]<-"furesoe"
-tab$Kommune[tab$Kommune=="helsingor"]<-"helsingoer"
-tab$Kommune[tab$Kommune=="hillerod"]<-"hilleroed"
-tab$Kommune[tab$Kommune=="laeso"]<-"laesoe"
-tab$Kommune[tab$Kommune=="aero"]<-"aeroe"
-tab$Kommune[tab$Kommune=="allerod"]<-"alleroed"
-tab$Kommune[tab$Kommune=="bronderslev"]<-"broenderslev"
-tab$Kommune[tab$Kommune=="ishoj"]<-"ishoej"
-tab$Kommune[tab$Kommune=="kobenhavn"]<-"koebenhavn"
-tab$Kommune[tab$Kommune=="morso"]<-"morsoe"
-tab$Kommune[tab$Kommune=="brondby"]<-"broendby"
-tab$Kommune[tab$Kommune=="christianso"]<-"christiansoe"
-tab$Kommune[tab$Kommune=="hjorring"]<-"hjoerring"
-tab$Kommune[tab$Kommune=="hojetaastrup"]<-"hoeje taastrup"
-tab$Kommune[tab$Kommune=="koge"]<-"koege"
-tab$Kommune[tab$Kommune=="ringkobingskjern"]<-"ringkoebing skjern"
-tab$Kommune[tab$Kommune=="horsholm"]<-"hoersholm"
-tab$Kommune[tab$Kommune=="ikastbrande"]<-"ikast brande"
-tab$Kommune[tab$Kommune=="lyngbytaarbaek"]<-"lyngby taarbaek"
-tab$Kommune[tab$Kommune=="rodovre"]<-"roedovre"
-tab$Kommune[tab$Kommune=="samso"]<-"samsoe"
-tab$Kommune[tab$Kommune=="solrod"]<-"solroed"
-tab$Kommune[tab$Kommune=="sonderborg"]<-"soenderborg"
-tab$Kommune[tab$Kommune=="soro"]<-"soroe"
-tab$Kommune[tab$Kommune=="tonder"]<-"toender"
-tab$Kommune[tab$Kommune=="tarnby"]<-"taarnby"
+raw_data <- read_delim(
+  "https://raw.githubusercontent.com/andrejeva-d/dk-dash-covid/main/Data/Data-Epidemiologiske-Rapport-16122020-20kr/Municipality_test_pos.csv", 
+  ";", escape_double = FALSE, col_types = cols(Antal_testede = col_number(), 
+                                               `Antal_bekr\303\246ftede_COVID-19` = col_number(), 
+                                               Befolkningstal = col_number(), `Kumulativ_incidens_(per_100000)` = col_number()), 
+  trim_ws = TRUE)
+raw_data<-raw_data[,-1]
+colnames(raw_data)<-c("Kommune", "Tested", "Positive", "Population","Positive_100000")
+rep<-tolower(raw_data$Kommune)
 
 
+rep<-str_replace_all(rep, "\u00f8", "o")
+rep<-str_replace_all(rep, "\u00e6", "ae")
+rep<-str_replace_all(rep, "\u00e5", "a")
+rep<-str_replace_all(rep, "\u00c6", "ae")
+rep<-str_replace_all(rep, "-", "")
 
+rep[rep=="faaborgmidtfyn"]<-"faaborg midtfyn"
+rep[rep=="fano"]<-"fanoe"
+rep[rep=="dragor"]<-"dragoer"
+rep[rep=="fureso"]<-"furesoe"
+rep[rep=="helsingor"]<-"helsingoer"
+rep[rep=="hillerod"]<-"hilleroed"
+rep[rep=="laeso"]<-"laesoe"
+rep[rep=="aero"]<-"aeroe"
+rep[rep=="allerod"]<-"alleroed"
+rep[rep=="bronderslev"]<-"broenderslev"
+rep[rep=="ishoj"]<-"ishoej"
+rep[rep=="kobenhavn"]<-"koebenhavn"
+rep[rep=="morso"]<-"morsoe"
+rep[rep=="brondby"]<-"broendby"
+rep[rep=="christianso"]<-"christiansoe"
+rep[rep=="hjorring"]<-"hjoerring"
+rep[rep=="hojetaastrup"]<-"hoeje taastrup"
+rep[rep=="koge"]<-"koege"
+rep[rep=="ringkobingskjern"]<-"ringkoebing skjern"
+rep[rep=="horsholm"]<-"hoersholm"
+rep[rep=="ikastbrande"]<-"ikast brande"
+rep[rep=="lyngbytaarbaek"]<-"lyngby taarbaek"
+rep[rep=="rodovre"]<-"roedovre"
+rep[rep=="samso"]<-"samsoe"
+rep[rep=="solrod"]<-"solroed"
+rep[rep=="sonderborg"]<-"soenderborg"
+rep[rep=="soro"]<-"soroe"
+rep[rep=="tonder"]<-"toender"
+rep[rep=="tarnby"]<-"taarnby"
 
+raw_data$Kommune<-rep
+
+rm(list = setdiff(ls(), "raw_data"))
+githubURL <- "https://github.com/andrejeva-d/dk-dash-covid/blob/main/Data/geo_data_municipality.RData?raw=true"
+load(url(githubURL))
