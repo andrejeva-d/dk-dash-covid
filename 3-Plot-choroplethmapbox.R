@@ -83,8 +83,7 @@ fig_map_dk <- fig_2 %>% layout(
 fig_map_dk
 
 
-
-
+save(fig_map_dk, file = "Plots/dk_map_municip.RData")
 
 
 
