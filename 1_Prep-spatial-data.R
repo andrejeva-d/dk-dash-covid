@@ -5,12 +5,12 @@ library(stringr)
 
 #########################################################################################
 # Prepare Municipality and Region spatial data file
-#########################################################################################
 
 # Convert fortify map data.frame to individual Polygon and then Polygons objects.
 # Save names in a separate list
 
-data_shape = mapDK::municipality
+data_shape = mapDK::rural
+#data_shape = mapDK::municipality
 sel <- names(table(data_shape$group))
 list_pol <- list()
 list_names <- c()
@@ -28,6 +28,7 @@ for (i in 1:length(sel)) {
   print(sel[i])
 }
 
+#########################################################################################
 # Convert to SpatialPolygons class and SpatialPolygonsDataFrame
 
 list_names <- str_sub(list_names, 1, nchar(list_names) - 1)
@@ -73,8 +74,8 @@ colnames(REZ) <- c("subreg", "reg")
 
 #########################################################################################
 # Save data
-#########################################################################################
 
 dir.create("Data")
 
-save(REZ, geoj, file = "Data/geo_data_municipality.RData")
+#save(REZ, geoj, file = "Data/data_geo_rural.RData")
+save(REZ, geoj, file = "Data/data_geo_municipality.RData")
